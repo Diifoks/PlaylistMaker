@@ -4,83 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/mainColor_lightMod">
+    android:background="?attr/colorPrimary">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingLeft="@dimen/large_padding"
-        android:paddingRight="@dimen/large_padding">
-
+        style="@style/HeaderLinearLayoutStyle"
+        android:layout_weight="1">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center"
+            style="@style/HeaderTextViewStyle"
             android:text="@string/appName"
-            android:textColor="@color/white"
-            android:textSize="@dimen/primary_text_size" />
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
     <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_weight="23"
     android:padding="@dimen/large_padding"
     android:orientation="vertical">
 
-        <Button
+        <Button style="@style/MainPageButtonStyle"
             android:id="@+id/searchButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_marginBottom="@dimen/medium_margin"
-            android:backgroundTint="@color/white"
-            android:textAllCaps="false"
             android:text="@string/searchButton"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/primary_text_size"
-            android:letterSpacing="-0.01"
-            app:cornerRadius="@dimen/rounding_corners_buttons"
-            app:icon="@drawable/search_icon"
-            app:iconGravity="textStart"
-            app:iconTint="@color/text_color" />
+            app:icon="@drawable/search_icon" />
 
-        <Button
+        <Button style="@style/MainPageButtonStyle"
             android:id="@+id/mediaLibraryButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_marginBottom="@dimen/medium_margin"
-            android:backgroundTint="@color/white"
-            android:textAllCaps="false"
             android:text="@string/mediaLibraryButton"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/primary_text_size"
-            android:letterSpacing="-0.01"
-            app:cornerRadius="@dimen/rounding_corners_buttons"
-            app:icon="@drawable/music_icon"
-            app:iconGravity="textStart"
-            app:iconTint="@color/text_color" />
+            app:icon="@drawable/music_icon" />
 
-        <Button
+        <Button style="@style/MainPageButtonStyle"
             android:id="@+id/settingsButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_marginBottom="@dimen/medium_margin"
-            android:backgroundTint="@color/white"
-            android:textAllCaps="false"
             android:text="@string/settingsButton"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/primary_text_size"
-            android:letterSpacing="-0.01"
-            app:cornerRadius="@dimen/rounding_corners_buttons"
-            app:icon="@drawable/settings_icon"
-            app:iconGravity="textStart"
-            app:iconTint="@color/text_color" />
+            app:icon="@drawable/settings_icon" />
 
     </LinearLayout>
 

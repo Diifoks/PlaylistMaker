@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         //Реализация кнопки через лямбда-выражение
         val mediaLibraryButton = findViewById<Button>(R.id.mediaLibraryButton)
         mediaLibraryButton.setOnClickListener {
-            val displayIntent = Intent(this, MessageActivity::class.java)
+            val displayIntent = Intent(this, MediaLibraryActivity::class.java)
             startActivity(displayIntent)
         }
 

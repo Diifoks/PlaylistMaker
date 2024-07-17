@@ -1,10 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity">
+    android:background="?attr/colorPrimaryVariant"
+    android:orientation="vertical">
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <LinearLayout
+      style="@style/HeaderLinearLayoutStyle"
+      android:layout_weight="1">
+
+    <Button
+        android:id="@+id/backButton"
+        style="@style/HeaderButtonStyle" />
+
+    <TextView
+        style="@style/HeaderTextViewStyle"
+        android:text="@string/searchButton" />
+
+  </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="23"
+      android:orientation="vertical"
+>
+
+    <FrameLayout style="@style/FrameLayoutStyle">
+
+      <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:background="@drawable/rounded_rectangle">
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:textColor="@color/text_color"
+            android:textColorHint="?attr/colorOnSecondary"
+            android:fontFamily="@font/ys_text_regular"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginEnd="32dp"
+            android:hint="@string/searchButton"
+            android:maxLines="1"
+            android:inputType="text"
+            android:layout_gravity="center_vertical|start"
+            android:drawablePadding="@dimen/little_padding"
+            android:drawableStart="@drawable/search_icon" />
+
+        <ImageView style="@style/ImageViewStyle"
+            android:visibility="invisible"
+            android:id="@+id/clearButton"
+            android:layout_margin="@dimen/medium_margin"
+            android:layout_gravity="center_vertical|end"
+            android:padding="@dimen/little_padding"
+            android:src="@drawable/delete"/>
+      </FrameLayout>
+    </FrameLayout>
+  </LinearLayout>
+</LinearLayout>
