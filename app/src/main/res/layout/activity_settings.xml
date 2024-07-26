@@ -4,38 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?attr/colorPrimaryVariant"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="@dimen/medium_padding"
-        android:orientation="horizontal">
+        style="@style/HeaderLinearLayoutStyle"
+        android:layout_weight="1">
 
         <Button
             android:id="@+id/backButton"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="44dp"
-            android:layout_height="match_parent"
-            android:padding="@dimen/medium_padding"
-            android:backgroundTint="@color/white"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/primary_text_size"
-            app:icon="@drawable/arrow_back"
-            app:iconGravity="textStart"
-            app:iconTint="@color/text_color" />
+            style="@style/HeaderButtonStyle" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="@dimen/medium_padding"
-            android:gravity="left|center"
-            android:text="@string/settings"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/primary_text_size" />
+            style="@style/HeaderTextViewStyle"
+            android:text="@string/settings" />
 
     </LinearLayout>
 
@@ -46,20 +28,10 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/large_padding">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/large_padding">
+        <FrameLayout style="@style/FrameLayoutStyle">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:text="@string/themeSwitch"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/secondary_text_size" />
-
+            <TextView style="@style/TextViewStyle"
+                android:text="@string/themeSwitch" />
             <Switch
                 android:layout_width="56dp"
                 android:layout_height="40dp"
@@ -67,69 +39,34 @@
 
         </FrameLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/large_padding">
+        <FrameLayout style="@style/FrameLayoutStyle">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:text="@string/shareApp"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/secondary_text_size" />
-
-            <ImageView
-                android:layout_width="@dimen/iconSize"
-                android:layout_height="@dimen/iconSize"
-                android:layout_gravity="center|end"
+            <TextView style="@style/TextViewStyle"
+                android:text="@string/shareApp" />
+            <ImageView style="@style/ImageViewStyle"
+                android:id="@+id/shareButton"
                 app:srcCompat="@drawable/share" />
-
 
         </FrameLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/large_padding">
+        <FrameLayout style="@style/FrameLayoutStyle">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+            <TextView style="@style/TextViewStyle"
                 android:layout_gravity="start"
-                android:text="@string/writeSupport"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/secondary_text_size" />
-
-            <ImageView
-                android:layout_width="@dimen/iconSize"
-                android:layout_height="@dimen/iconSize"
-                android:layout_gravity="center|end"
+                android:text="@string/writeSupport" />
+            <ImageView style="@style/ImageViewStyle"
+                android:id="@+id/supportButton"
                 app:srcCompat="@drawable/support" />
 
         </FrameLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/large_padding">
+        <FrameLayout style="@style/FrameLayoutStyle">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <TextView style="@style/TextViewStyle"
                 android:layout_gravity="start"
-                android:text="@string/userAgreement"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/secondary_text_size" />
-
-            <ImageView
-                android:layout_width="@dimen/iconSize"
-                android:layout_height="@dimen/iconSize"
-                android:layout_gravity="center|end"
+                android:text="@string/userAgreement" />
+            <ImageView style="@style/ImageViewStyle"
+                android:id="@+id/agreementButton"
                 app:srcCompat="@drawable/arrow" />
 
         </FrameLayout>

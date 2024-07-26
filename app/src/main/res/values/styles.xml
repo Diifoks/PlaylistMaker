@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MainPageButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:layout_marginBottom">@dimen/medium_margin</item>
+        <item name="android:backgroundTint">?attr/colorSecondary</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/primary_text_size</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="cornerRadius">@dimen/rounding_corners_buttons</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconTint">@color/text_color</item>
+    </style>
+
+    <style name="FrameLayoutStyle" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">@dimen/large_padding</item>
+    </style>
+
+    <style name="TextViewStyle" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center|start</item>
+        <item name="android:textColor">?attr/colorSecondaryVariant</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/secondary_text_size</item>
+    </style>
+
+    <style name="ImageViewStyle" parent="">
+        <item name="android:layout_width">@dimen/iconSize</item>
+        <item name="android:layout_height">@dimen/iconSize</item>
+        <item name="android:layout_gravity">center|end</item>
+    </style>
+
+    <!-- Стиль для заголовка -->
+    <style name="HeaderLinearLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/medium_padding</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="HeaderButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:backgroundTint">?attr/colorPrimaryVariant</item>
+        <item name="android:layout_width">44dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:padding">@dimen/medium_padding</item>
+        <item name="android:textColor">?attr/colorSecondaryVariant</item>
+        <item name="android:textSize">@dimen/primary_text_size</item>
+        <item name="icon">@drawable/arrow_back</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconTint">?attr/colorSecondaryVariant</item>
+    </style>
+
+    <style name="HeaderTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center|start</item>
+        <item name="android:textColor">?attr/colorSecondaryVariant</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:padding">@dimen/medium_padding</item>
+        <item name="android:textSize">@dimen/primary_text_size</item>
+    </style>
+</resources>

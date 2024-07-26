@@ -10,4 +10,11 @@
     <string name="writeSupport">Написать в поддержку</string>
     <string name="userAgreement">Пользовательское соглашение</string>
 
+    <string name="text_email">Отправить письмо...</string>
+    <string name="share_app_text">https://practicum.yandex.ru/profile/android-developer/</string>
+    <string name="support_email">адрес_студента@domain.com</string>
+    <string name="support_email_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="support_email_body">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="yandex_praktikum_terms_url">https://yandex.ru/legal/practicum_offer/</string>
+
 </resources>
