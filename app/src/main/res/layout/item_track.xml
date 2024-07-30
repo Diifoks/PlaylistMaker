@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -24,7 +25,7 @@
             android:layout_width="match_parent"
             android:maxWidth="120dp"
             android:layout_height="wrap_content"
-            android:text="@string/track_name"
+            tools:text="Track Name"
             android:textColor="?attr/colorSecondaryVariant"
             android:fontFamily="@font/ys_text_regular"
             android:textSize="16sp"
@@ -38,21 +39,15 @@
 
             <TextView
                 android:id="@+id/artistNameTextView"
-                android:layout_width="wrap_content"
+                style="@style/TreckTextViewStyle"
                 android:maxWidth="100dp"
-                android:layout_height="wrap_content"
-                android:text="@string/artist_name"
-                android:textColor="?attr/colorSecondary"
-                android:fontFamily="@font/ys_text_regular"
-                android:textSize="11sp"
-                android:maxLines="1"
-                android:ellipsize="end" />
+                tools:text="Artist Name" />
 
             <TextView
                 android:id="@+id/dotSeparatorTextView"
                 android:layout_width="13dp"
                 android:layout_height="wrap_content"
-                android:text="@string/dot_separator"
+                tools:text="•"
                 android:textColor="?attr/colorSecondary"
                 android:fontFamily="@font/ys_text_regular"
                 android:gravity="center"
@@ -60,14 +55,8 @@
 
             <TextView
                 android:id="@+id/trackTimeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/track_time"
-                android:textColor="?attr/colorSecondary"
-                android:fontFamily="@font/ys_text_regular"
-                android:textSize="11sp"
-                android:maxLines="1"
-                android:ellipsize="end" />
+                style="@style/TreckTextViewStyle"
+                tools:text="Track Time" />
         </LinearLayout>
     </LinearLayout>
 
