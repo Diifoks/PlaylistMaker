@@ -17,4 +17,10 @@
     <string name="support_email_body">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="yandex_praktikum_terms_url">https://yandex.ru/legal/practicum_offer/</string>
 
+
+    <string name="track_name">Track Name</string>
+    <string name="artist_name">Artist Name</string>
+    <string name="track_time">Track Time</string>
+    <string name="dot_separator">•</string>
+
 </resources>

@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/artworkImageView"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/placeholder" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingStart="16dp">
+
+        <TextView
+            android:id="@+id/trackNameTextView"
+            android:layout_width="match_parent"
+            android:maxWidth="120dp"
+            android:layout_height="wrap_content"
+            android:text="@string/track_name"
+            android:textColor="?attr/colorSecondaryVariant"
+            android:fontFamily="@font/ys_text_regular"
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:gravity="start" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/artistNameTextView"
+                android:layout_width="wrap_content"
+                android:maxWidth="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/artist_name"
+                android:textColor="?attr/colorSecondary"
+                android:fontFamily="@font/ys_text_regular"
+                android:textSize="11sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/dotSeparatorTextView"
+                android:layout_width="13dp"
+                android:layout_height="wrap_content"
+                android:text="@string/dot_separator"
+                android:textColor="?attr/colorSecondary"
+                android:fontFamily="@font/ys_text_regular"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/trackTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/track_time"
+                android:textColor="?attr/colorSecondary"
+                android:fontFamily="@font/ys_text_regular"
+                android:textSize="11sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/arrowImageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:src="@drawable/arrow"
+        app:tint="?attr/colorSecondary" />
+</LinearLayout>
