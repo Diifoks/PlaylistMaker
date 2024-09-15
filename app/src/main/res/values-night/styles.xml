@@ -68,4 +68,14 @@
         <item name="android:padding">@dimen/medium_padding</item>
         <item name="android:textSize">@dimen/primary_text_size</item>
     </style>
+
+    <style name="TreckTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="android:fontFamily">@font/ys_text_regular</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
 </resources>
