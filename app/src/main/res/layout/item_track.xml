@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
     <ImageView
         android:id="@+id/artworkImageView"
@@ -47,7 +50,7 @@
                 android:id="@+id/dotSeparatorTextView"
                 android:layout_width="13dp"
                 android:layout_height="wrap_content"
-                tools:text="•"
+                android:text="•"
                 android:textColor="?attr/colorSecondary"
                 android:fontFamily="@font/ys_text_regular"
                 android:gravity="center"
@@ -62,9 +65,10 @@
 
     <ImageView
         android:id="@+id/arrowImageView"
-        android:layout_width="24dp"
+        android:layout_width="20dp"
         android:layout_height="24dp"
         android:layout_gravity="center"
         android:src="@drawable/arrow"
-        app:tint="?attr/colorSecondary" />
+        app:tint="?attr/colorSecondary"
+        android:padding="4dp"/>
 </LinearLayout>

@@ -29,20 +29,40 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var trackList: ArrayList<Track>
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var iTunesService: iTunesApi
-    //Переменные для ошибок
+    // Переменные для ошибок
     private lateinit var placeholderMessageError: ImageView
     private lateinit var placeholderTextView: TextView
     private lateinit var retryButton: Button
     private lateinit var recyclerView: RecyclerView
+    // Для истории поиска
+    private lateinit var searchHistory: SearchHistory
+    private lateinit var historyRecyclerView: RecyclerView
+    private lateinit var historyAdapter: TrackAdapter
+    private lateinit var clearHistoryButton: Button
+    private lateinit var historyHeader: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        // Инициализация элементов интерфейса
         placeholderMessageError = findViewById(R.id.placeholderMessageError)
         placeholderTextView = findViewById(R.id.placeholderTextView)
         retryButton = findViewById(R.id.retryButton)
         recyclerView = findViewById(R.id.recyclerView)
         searchEditText = findViewById(R.id.searchEditText)
         val clearButton = findViewById<ImageView>(R.id.clearButton)
+
+        // Инициализация истории поиска
+        searchHistory = SearchHistory(getSharedPreferences("PlaylistMakerPrefs", Context.MODE_PRIVATE))
+        historyRecyclerView = findViewById(R.id.historyRecyclerView)
+        historyHeader = findViewById(R.id.historyHeader)
+        clearHistoryButton = findViewById(R.id.clearHistoryButton)
+
+        // Инициализация адаптера истории поиска
+        historyAdapter = TrackAdapter(searchHistory.getHistory())
+        historyRecyclerView.layoutManager = LinearLayoutManager(this)
+        historyRecyclerView.adapter = historyAdapter
 
         // Кнопка обновления поиска
         retryButton.setOnClickListener {
@@ -64,6 +84,9 @@ class SearchActivity : AppCompatActivity() {
             // Скрыть трек лист
             trackList.clear()
             trackAdapter.notifyDataSetChanged()
+
+            // Скрытие сообщений об ошибках
+            hidePlaceholder()
         }
 
         // Обработка done на клавиатуре
@@ -78,23 +101,18 @@ class SearchActivity : AppCompatActivity() {
 
         // Создание TextWatcher для отслеживания изменений в поисковой строке
         val textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Действия до изменения текста
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchText = s.toString()
                 // Логика для изменения поля ввода
-                if (s.isNullOrEmpty()) {
-                    clearButton.visibility = View.GONE
-                } else {
-                    clearButton.visibility = View.VISIBLE
-                }
+                clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                // Обновляем видимость истории при изменении текста
+                toggleHistoryVisibility()
             }
 
-            // При изменение текста
-            override fun afterTextChanged(s: Editable?) {
-            }
+            // При изменении текста
+            override fun afterTextChanged(s: Editable?) {}
         }
 
         // Установка TextWatcher для поля ввода поисковой строки
@@ -103,19 +121,37 @@ class SearchActivity : AppCompatActivity() {
         // Установка фокуса на поле ввода
         searchEditText.requestFocus()
 
+        // Инициализация списка треков
         trackList = arrayListOf()
-
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         trackAdapter = TrackAdapter(trackList)
         recyclerView.adapter = trackAdapter
 
+        // Инициализация Retrofit
         val retrofit = Retrofit.Builder()
             .baseUrl("https://itunes.apple.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         iTunesService = retrofit.create(iTunesApi::class.java)
+
+        // Обработчик нажатия на трек
+        trackAdapter.setOnTrackClickListener { track ->
+            searchHistory.addTrack(track)
+            historyAdapter.notifyDataSetChanged() // Обновление адаптера истории
+            Toast.makeText(this, "Трек добавлен в историю", Toast.LENGTH_SHORT).show()
+            toggleHistoryVisibility()
+        }
+
+        // Обработчик нажатия на кнопку очистки истории
+        clearHistoryButton.setOnClickListener {
+            searchHistory.clearHistory()
+            historyAdapter.notifyDataSetChanged() // Обновление адаптера после очистки
+            toggleHistoryVisibility()
+        }
+
+        // Обновление видимости истории поиска при создании активности
+        toggleHistoryVisibility()
     }
 
     private fun searchTracks(term: String) {
@@ -125,14 +161,17 @@ class SearchActivity : AppCompatActivity() {
                     trackList.clear()
                     trackList.addAll(response.body()!!.results)
                     if (trackList.isEmpty()) {
-                        showPlaceholder( getString(R.string.search_nothing), R.drawable.placeholder_no_results, false)
+                        showPlaceholder(getString(R.string.search_nothing), R.drawable.placeholder_no_results, false)
                     } else {
                         hidePlaceholder()
                         trackAdapter.notifyDataSetChanged()
+                        // Скрыть историю, если что-то найдено
+                        historyHeader.visibility = View.GONE
+                        clearHistoryButton.visibility = View.GONE
+                        historyRecyclerView.visibility = View.GONE
                     }
                 } else {
                     showPlaceholder(getString(R.string.search_error), R.drawable.placeholder_server_error, true)
-
                 }
             }
 
@@ -142,6 +181,22 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
+    private fun toggleHistoryVisibility() {
+        val history = searchHistory.getHistory()
+        if (history.isNotEmpty() && searchEditText.text.isEmpty()) {
+            historyHeader.visibility = View.VISIBLE
+            clearHistoryButton.visibility = View.VISIBLE
+            historyRecyclerView.visibility = View.VISIBLE
+            historyAdapter = TrackAdapter(history)
+            historyRecyclerView.layoutManager = LinearLayoutManager(this)
+            historyRecyclerView.adapter = historyAdapter
+        } else {
+            historyHeader.visibility = View.GONE
+            clearHistoryButton.visibility = View.GONE
+            historyRecyclerView.visibility = View.GONE
+        }
+    }
+
     private fun showPlaceholder(message: String, imageResId: Int, showRetryButton: Boolean) {
         recyclerView.visibility = View.GONE
         placeholderMessageError.visibility = View.VISIBLE
@@ -149,11 +204,8 @@ class SearchActivity : AppCompatActivity() {
         placeholderTextView.text = message
         placeholderMessageError.setImageResource(imageResId)
 
-        if (showRetryButton) {
-            retryButton.visibility = View.VISIBLE
-        } else {
-            retryButton.visibility = View.GONE
-        }
+        // Условие показа кнопки повтора
+        retryButton.visibility = if (showRetryButton) View.VISIBLE else View.GONE
     }
 
     private fun hidePlaceholder() {
@@ -177,5 +229,7 @@ class SearchActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         searchText = savedInstanceState.getString("searchText", "")
         searchEditText.setText(searchText)
+        toggleHistoryVisibility() // Переключаем видимость истории при восстановлении состояния
     }
 }
+
