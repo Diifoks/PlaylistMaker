@@ -6,11 +6,13 @@ import com.google.gson.reflect.TypeToken
 
 class SearchHistory(private val sharedPreferences: SharedPreferences) {
     private val gson = Gson()
-    private val key = "search_history"
+    companion object {
+        private const val keySearchHistory = "search_history"
+    }
 
     // Получение истории поиска
     fun getHistory(): ArrayList<Track> {
-        val json = sharedPreferences.getString(key, null)
+        val json = sharedPreferences.getString(keySearchHistory, null)
         val type = object : TypeToken<ArrayList<Track>>() {}.type
         return if (json != null) gson.fromJson(json, type) else ArrayList()
     }
@@ -30,11 +32,11 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
     // Сохранение истории
     private fun saveHistory(history: List<Track>) {
         val json = gson.toJson(history)
-        sharedPreferences.edit().putString(key, json).apply()
+        sharedPreferences.edit().putString(keySearchHistory, json).apply()
     }
 
     // Очистка истории
     fun clearHistory() {
-        sharedPreferences.edit().remove(key).apply()
+        sharedPreferences.edit().remove(keySearchHistory).apply()
     }
 }

@@ -9,14 +9,19 @@ class App : Application() {
     var darkTheme: Boolean = false
     private lateinit var sharedPrefs: SharedPreferences
 
+    companion object {
+        private const val PREFS_NAME = "app_preferences"
+        private const val KEY_DARK_THEME = "dark_theme"
+    }
+
     override fun onCreate() {
         super.onCreate()
 
         // Инициализируем SharedPreferences
-        sharedPrefs = getSharedPreferences("app_preferences", MODE_PRIVATE)
+        sharedPrefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
 
         // Получаем сохранённую тему
-        darkTheme = sharedPrefs.getBoolean("dark_theme", false)
+        darkTheme = sharedPrefs.getBoolean(KEY_DARK_THEME, false)
 
         // Устанавливаем тему в соответствии с сохранённым состоянием
         switchTheme(darkTheme)
@@ -36,6 +41,6 @@ class App : Application() {
         )
 
         // Сохранение нового состояния темы
-        sharedPrefs.edit().putBoolean("dark_theme", darkTheme).apply()
+        sharedPrefs.edit().putBoolean(KEY_DARK_THEME, darkTheme).apply()
     }
 }
