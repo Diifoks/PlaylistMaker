@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -141,6 +142,10 @@ class SearchActivity : AppCompatActivity() {
             historyAdapter.notifyDataSetChanged() // Обновление адаптера истории
             Toast.makeText(this, "Трек добавлен в историю", Toast.LENGTH_SHORT).show()
             toggleHistoryVisibility()
+
+            val intent = Intent(this, AudioPlayerActivity::class.java)
+            intent.putExtra("TRACK", track) // передаем выбранный трек
+            startActivity(intent)
         }
 
         // Обработчик нажатия на кнопку очистки истории
@@ -190,6 +195,18 @@ class SearchActivity : AppCompatActivity() {
             historyAdapter = TrackAdapter(history)
             historyRecyclerView.layoutManager = LinearLayoutManager(this)
             historyRecyclerView.adapter = historyAdapter
+
+            historyAdapter.setOnTrackClickListener { track ->
+                // Перемещаем трек на вершину истории
+                searchHistory.addTrack(track)
+                // Обновление видимости истории
+                toggleHistoryVisibility()
+
+                // Открытие меню трека (AudioPlayerActivity)
+                val intent = Intent(this, AudioPlayerActivity::class.java)
+                intent.putExtra("TRACK", track) // передаем выбранный трек
+                startActivity(intent)
+            }
         } else {
             historyHeader.visibility = View.GONE
             clearHistoryButton.visibility = View.GONE

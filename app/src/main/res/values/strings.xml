@@ -22,6 +22,11 @@
     <string name="retryButton">Обновить</string>
     <string name="clearHistory">Очистить историю</string>
     <string name="youSearch">Вы искали</string>
+    <string name="Duration">Длительность:</string>
+    <string name="Album">Альбом:</string>
+    <string name="Year">Год:</string>
+    <string name="Genre">Жанр:</string>
+    <string name="country">Страна:</string>
 
 
 </resources>
