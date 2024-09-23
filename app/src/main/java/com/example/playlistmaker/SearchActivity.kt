@@ -85,9 +85,10 @@ class SearchActivity : AppCompatActivity() {
             // Скрыть трек лист
             trackList.clear()
             trackAdapter.notifyDataSetChanged()
-
             // Скрытие сообщений об ошибках
             hidePlaceholder()
+            // Обновление видимости истории
+            toggleHistoryVisibility()
         }
 
         // Обработка done на клавиатуре
@@ -108,8 +109,14 @@ class SearchActivity : AppCompatActivity() {
                 searchText = s.toString()
                 // Логика для изменения поля ввода
                 clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                // Если поле ввода пустое, очищаем список треков и обновляем видимость истории
+                if (s.isNullOrEmpty()) {
+                    trackList.clear() // Очистка списка треков
+                    trackAdapter.notifyDataSetChanged() // Уведомление адаптера об изменениях
+                }
                 // Обновляем видимость истории при изменении текста
                 toggleHistoryVisibility()
+                hidePlaceholder()
             }
 
             // При изменении текста

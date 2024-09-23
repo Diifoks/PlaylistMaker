@@ -47,8 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
-                    app:trackTint="#E6E8EB"
-                    app:thumbTint="#AEAFB4" />
+                    style="@style/CustomSwitchStyle"/>
 
         </FrameLayout>
 
