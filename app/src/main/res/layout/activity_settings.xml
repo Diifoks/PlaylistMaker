@@ -28,14 +28,27 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/large_padding">
 
-        <FrameLayout style="@style/FrameLayoutStyle">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="23"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/large_padding">
 
-            <TextView style="@style/TextViewStyle"
-                android:text="@string/themeSwitch" />
-            <Switch
-                android:layout_width="56dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center|end" />
+            <FrameLayout
+                style="@style/FrameLayoutStyle">
+
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:text="@string/themeSwitch" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/themeSwitcher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|end"
+                    app:trackTint="#E6E8EB"
+                    app:thumbTint="#AEAFB4" />
 
         </FrameLayout>
 
@@ -72,5 +85,5 @@
         </FrameLayout>
 
     </LinearLayout>
-
+</LinearLayout>
 </LinearLayout>

@@ -3,9 +3,13 @@
     <dimen name="little_padding">4dp</dimen>
     <dimen name="medium_padding">8dp</dimen>
     <dimen name="large_padding">16dp</dimen>
+    <dimen name="extra_large_padding">24dp</dimen>
+
     <dimen name="little_margin">4dp</dimen>
     <dimen name="medium_margin">8dp</dimen>
     <dimen name="large_margin">16dp</dimen>
+    <dimen name="extra_large_margin">24dp</dimen>
+
     <dimen name="primary_text_size">22sp</dimen>
     <dimen name="secondary_text_size">16sp</dimen>
     <dimen name="rounding_corners_buttons">16dp</dimen>

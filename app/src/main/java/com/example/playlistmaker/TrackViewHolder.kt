@@ -19,16 +19,16 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         trackNameTextView.text = track.trackName
         artistNameTextView.text = track.artistName
 
-        val dateFormat = SimpleDateFormat("mm:ss", Locale.getDefault()).format(293000L)
-        val formattedTime = dateFormat.format(track.trackTime)
+        val formattedTime = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
         trackTimeTextView.text = formattedTime
 
+        // Загрузка изображения обложки с использованием Glide
         Glide.with(itemView.context)
             .load(track.artworkUrl100)
-            .placeholder(R.drawable.placeholder)
+            .placeholder(R.drawable.placeholder) // Заглушка
+            .error(R.drawable.placeholder) // Заглушка на случай, если изображение не загрузилось
             .centerInside()
             .transform(RoundedCorners(10))
             .into(artworkImageView)
     }
-
 }

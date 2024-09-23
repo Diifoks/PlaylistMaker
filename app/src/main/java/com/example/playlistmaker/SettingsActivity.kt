@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -32,6 +33,16 @@ class SettingsActivity : AppCompatActivity() {
         val backButton = findViewById<Button>(R.id.backButton)
         backButton.setOnClickListener {
             finish()
+        }
+
+        // Переключатель темы
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+
+        // Устанавливаем начальное состояние переключателя в зависимости от текущей темы
+        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
         }
     }
 
