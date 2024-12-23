@@ -1,17 +1,22 @@
 package com.example.playlistmaker
 
-import androidx.appcompat.app.AppCompatActivity
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayerActivity : AppCompatActivity() {
+    private var mediaPlayer: MediaPlayer? = null
+    private val handler = Handler(Looper.getMainLooper())
+    private var isPlaying = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audioplayer)
@@ -20,9 +25,12 @@ class AudioPlayerActivity : AppCompatActivity() {
         val track = intent.getSerializableExtra("TRACK") as Track
 
         // Инициализация UI элементов
+        val playButton = findViewById<ImageButton>(R.id.play_button)
         val backButton = findViewById<Button>(R.id.back_button)
         val songTitle = findViewById<TextView>(R.id.song_title)
         val artistName = findViewById<TextView>(R.id.artist_name)
+        val songProgress = findViewById<TextView>(R.id.song_progress)
+
         val songDetailsDuration = findViewById<TextView>(R.id.song_details_duration)
         val songDetailsAlbum = findViewById<TextView>(R.id.song_details_album)
         val songDetailsYear = findViewById<TextView>(R.id.song_details_year)
@@ -47,13 +55,42 @@ class AudioPlayerActivity : AppCompatActivity() {
             .transform(RoundedCorners(10))
             .into(findViewById(R.id.album_cover))
 
-        // Обработка кнопки "Назад"
+        // Инициализация MediaPlayer
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(track.previewUrl)
+            prepare()
+        }
+
+        // Обновление времени трека
+        val updateProgress = object : Runnable {
+            override fun run() {
+                mediaPlayer?.let {
+                    val currentPosition = it.currentPosition
+                    songProgress.text = formatTrackTime(currentPosition.toLong())
+                    handler.postDelayed(this, 500)
+                }
+            }
+        }
+
+        // Настройка кнопки воспроизведения
+        playButton.setOnClickListener {
+            if (isPlaying) {
+                mediaPlayer?.pause()
+                playButton.setImageResource(R.drawable.playbutton)
+                handler.removeCallbacks(updateProgress)
+            } else {
+                mediaPlayer?.start()
+                playButton.setImageResource(R.drawable.pausebutton)
+                handler.post(updateProgress)
+            }
+            isPlaying = !isPlaying
+        }
+
+        // Настройка кнопки "Назад"
         backButton.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed() // Обработка нажатия кнопки назад
+            onBackPressedDispatcher.onBackPressed()
         }
     }
-
-
     // Форматирование времени
     private fun formatTrackTime(trackTimeMillis: Long): String {
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
