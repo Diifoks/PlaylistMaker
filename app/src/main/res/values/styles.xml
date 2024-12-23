@@ -77,4 +77,9 @@
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
+
+    <style name="CustomSwitchStyle" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="trackTint">@color/track_color</item>
+        <item name="thumbTint">@color/thumb_color</item>
+    </style>
 </resources>
