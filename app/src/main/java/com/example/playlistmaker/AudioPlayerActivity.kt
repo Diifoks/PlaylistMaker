@@ -55,12 +55,6 @@ class AudioPlayerActivity : AppCompatActivity() {
             .transform(RoundedCorners(10))
             .into(findViewById(R.id.album_cover))
 
-        // Инициализация MediaPlayer
-        mediaPlayer = MediaPlayer().apply {
-            setDataSource(track.previewUrl)
-            prepare()
-        }
-
         // Обновление времени трека
         val updateProgress = object : Runnable {
             override fun run() {
@@ -69,6 +63,18 @@ class AudioPlayerActivity : AppCompatActivity() {
                     songProgress.text = formatTrackTime(currentPosition.toLong())
                     handler.postDelayed(this, 500)
                 }
+            }
+        }
+
+        // Инициализация MediaPlayer
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(track.previewUrl)
+            prepare()
+            setOnCompletionListener {
+                playButton.setImageResource(R.drawable.playbutton)
+                this@AudioPlayerActivity.isPlaying = false
+                handler.removeCallbacks(updateProgress)
+                songProgress.text = "00:00"
             }
         }
 
@@ -88,9 +94,29 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         // Настройка кнопки "Назад"
         backButton.setOnClickListener {
+            stopAndReleaseMediaPlayer()
             onBackPressedDispatcher.onBackPressed()
         }
     }
+    override fun onBackPressed() {
+        stopAndReleaseMediaPlayer()
+        super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopAndReleaseMediaPlayer()
+    }
+    private fun stopAndReleaseMediaPlayer() {
+        mediaPlayer?.let {
+            if (it.isPlaying) {
+                it.stop()
+            }
+            it.release()
+        }
+        mediaPlayer = null
+    }
+
     // Форматирование времени
     private fun formatTrackTime(trackTimeMillis: Long): String {
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
