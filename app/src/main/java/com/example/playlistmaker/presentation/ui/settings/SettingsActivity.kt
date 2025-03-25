@@ -36,7 +36,6 @@ class SettingsActivity : AppCompatActivity() {
 
         themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
             themeUseCase.toggleTheme(isChecked)
-            (application as App).applyTheme(isChecked)
             recreate()
         }
     }

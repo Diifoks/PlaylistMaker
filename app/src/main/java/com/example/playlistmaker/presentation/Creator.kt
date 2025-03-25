@@ -11,7 +11,6 @@ import com.example.playlistmaker.data.preferences.TrackRepositoryImpl
 import com.example.playlistmaker.domain.repository.SearchHistoryRepository
 import com.example.playlistmaker.domain.repository.ThemeRepository
 import com.example.playlistmaker.domain.repository.TrackRepository
-import com.example.playlistmaker.domain.ThemeManager
 import com.example.playlistmaker.domain.usecase.*
 import com.google.gson.Gson
 
@@ -26,11 +25,9 @@ object Creator {
     }
 
     fun provideThemeUseCase(context: Context): ThemeUseCase {
-        val prefs = context.getSharedPreferences(Consts.PREFS_NAME, Context.MODE_PRIVATE)
-        val prefsHelper = SharedPreferencesHelper(prefs, Gson())
-        val themeRepository: ThemeRepository = ThemeRepositoryImpl(prefsHelper)
-        val themeManager = (context.applicationContext as App).themeManager
-        return ThemeUseCase(themeRepository, themeManager)
+        val prefsHelper = (context.applicationContext as App).sharedPreferencesHelper
+        val themeRepository: ThemeRepository = ThemeRepositoryImpl(prefsHelper, context)
+        return ThemeUseCase(themeRepository)
     }
 
     fun provideSearchHistoryUseCase(context: Context): SearchHistoryUseCase {
