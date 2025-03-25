@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui.searchs
 
 import android.view.View
 import android.widget.ImageView
@@ -6,6 +6,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.model.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -22,11 +24,10 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val formattedTime = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
         trackTimeTextView.text = formattedTime
 
-        // Загрузка изображения обложки с использованием Glide
         Glide.with(itemView.context)
             .load(track.artworkUrl100)
-            .placeholder(R.drawable.placeholder) // Заглушка
-            .error(R.drawable.placeholder) // Заглушка на случай, если изображение не загрузилось
+            .placeholder(R.drawable.placeholder)
+            .error(R.drawable.placeholder)
             .centerInside()
             .transform(RoundedCorners(10))
             .into(artworkImageView)
