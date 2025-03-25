@@ -3,6 +3,8 @@ package com.example.playlistmaker
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -21,6 +23,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.widget.ProgressBar
 
 class SearchActivity : AppCompatActivity() {
     // Переменные для сохранения текста
@@ -41,6 +44,10 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var historyAdapter: TrackAdapter
     private lateinit var clearHistoryButton: Button
     private lateinit var historyHeader: TextView
+    // Для отображения индикации поиска
+    private val handler = Handler(Looper.getMainLooper())
+    private var searchRunnable: Runnable? = null
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +71,9 @@ class SearchActivity : AppCompatActivity() {
         historyAdapter = TrackAdapter(searchHistory.getHistory())
         historyRecyclerView.layoutManager = LinearLayoutManager(this)
         historyRecyclerView.adapter = historyAdapter
+
+        // Инициализация идикатора поиска
+        progressBar = findViewById(R.id.progressBar)
 
         // Кнопка обновления поиска
         retryButton.setOnClickListener {
@@ -109,14 +119,21 @@ class SearchActivity : AppCompatActivity() {
                 searchText = s.toString()
                 // Логика для изменения поля ввода
                 clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                // Очищаем предыдущие запланированные действия
+                searchRunnable?.let { handler.removeCallbacks(it) }
                 // Если поле ввода пустое, очищаем список треков и обновляем видимость истории
                 if (s.isNullOrEmpty()) {
                     trackList.clear() // Очистка списка треков
                     trackAdapter.notifyDataSetChanged() // Уведомление адаптера об изменениях
+                    // Обновляем видимость истории при изменении текста
+                    toggleHistoryVisibility()
+                    hidePlaceholder()
+                }else {
+                    searchRunnable = Runnable {
+                        searchTracks(searchText)
+                    }
+                    handler.postDelayed(searchRunnable!!, 500) // Задержка 500 мс
                 }
-                // Обновляем видимость истории при изменении текста
-                toggleHistoryVisibility()
-                hidePlaceholder()
             }
 
             // При изменении текста
@@ -144,16 +161,35 @@ class SearchActivity : AppCompatActivity() {
         iTunesService = retrofit.create(iTunesApi::class.java)
 
         // Обработчик нажатия на трек
+//        trackAdapter.setOnTrackClickListener { track ->
+//            searchHistory.addTrack(track)
+//            historyAdapter.notifyDataSetChanged() // Обновление адаптера истории
+//            Toast.makeText(this, "Трек добавлен в историю", Toast.LENGTH_SHORT).show()
+//            toggleHistoryVisibility()
+//
+//            val intent = Intent(this, AudioPlayerActivity::class.java)
+//            intent.putExtra("TRACK", track) // передаем выбранный трек
+//            startActivity(intent)
+//        }
+        // Обработчик нажатия на трек с debounce
         trackAdapter.setOnTrackClickListener { track ->
-            searchHistory.addTrack(track)
-            historyAdapter.notifyDataSetChanged() // Обновление адаптера истории
-            Toast.makeText(this, "Трек добавлен в историю", Toast.LENGTH_SHORT).show()
-            toggleHistoryVisibility()
+            // Используем debounce
+            var isClickable = true
+            if (isClickable) {
+                isClickable = false
+                handler.postDelayed({ isClickable = true }, 1000)
 
-            val intent = Intent(this, AudioPlayerActivity::class.java)
-            intent.putExtra("TRACK", track) // передаем выбранный трек
-            startActivity(intent)
+                searchHistory.addTrack(track)
+                historyAdapter.notifyDataSetChanged() // Обновление адаптера истории
+                toggleHistoryVisibility()
+
+                val intent = Intent(this, AudioPlayerActivity::class.java)
+                intent.putExtra("TRACK", track) // передаем выбранный трек
+                startActivity(intent)
+            }
         }
+
+
 
         // Обработчик нажатия на кнопку очистки истории
         clearHistoryButton.setOnClickListener {
@@ -167,8 +203,22 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchTracks(term: String) {
+        // Скрываем историю поиска и плейсхолдеры
+        hideHistory()
+        // Показываем ProgressBar и скрываем остальные элементы
+        progressBar.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+        hidePlaceholder()
+
+        // Скрываем старые результаты
+        trackList.clear()
+        trackAdapter.notifyDataSetChanged()
+
+        // Выполняем запрос
         iTunesService.searchTracks(term).enqueue(object : Callback<SearchResponse> {
             override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
+                progressBar.visibility = View.GONE // Скрываем ProgressBar после завершения поиска
+
                 if (response.isSuccessful && response.body() != null) {
                     trackList.clear()
                     trackList.addAll(response.body()!!.results)
@@ -176,11 +226,8 @@ class SearchActivity : AppCompatActivity() {
                         showPlaceholder(getString(R.string.search_nothing), R.drawable.placeholder_no_results, false)
                     } else {
                         hidePlaceholder()
+                        recyclerView.visibility = View.VISIBLE // Показываем список треков
                         trackAdapter.notifyDataSetChanged()
-                        // Скрыть историю, если что-то найдено
-                        historyHeader.visibility = View.GONE
-                        clearHistoryButton.visibility = View.GONE
-                        historyRecyclerView.visibility = View.GONE
                     }
                 } else {
                     showPlaceholder(getString(R.string.search_error), R.drawable.placeholder_server_error, true)
@@ -188,9 +235,16 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+                progressBar.visibility = View.GONE // Скрываем ProgressBar в случае ошибки
                 showPlaceholder(getString(R.string.search_error), R.drawable.placeholder_server_error, true)
             }
         })
+    }
+
+    private fun hideHistory() {
+        historyRecyclerView.visibility = View.GONE
+        historyHeader.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
     }
 
     private fun toggleHistoryVisibility() {
@@ -233,7 +287,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun hidePlaceholder() {
-        recyclerView.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
         placeholderMessageError.visibility = View.GONE
         placeholderTextView.visibility = View.GONE
         retryButton.visibility = View.GONE
